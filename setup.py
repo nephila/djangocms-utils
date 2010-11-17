@@ -6,5 +6,6 @@ setup(name='djangocms-utils',
       author='Oyvind Saltvik',
       author_email='oyvind.saltvik@gmail.com',
       url='http://bitbucket.org/fivethreeo/djangocms-utils/',
-      packages = ['djangocms_utils', 'djangocms_utils.templatetags']
+      packages = ['djangocms_utils', 'djangocms_utils.templatetags'],
+      test_suite = 'djangocms_utils.runtests.runtests'
 )
