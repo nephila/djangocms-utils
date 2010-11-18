@@ -10,11 +10,15 @@ from cms.models.pluginmodel import CMSPlugin
 from cms.forms.widgets import PlaceholderPluginEditorWidget
 from cms.admin.placeholderadmin import PlaceholderAdmin
 
-def get_or_create_placeholders(obj):
-    for placeholder_name in obj._meta.get_field('placeholders').placeholders:
-        placeholder, created = obj.placeholders.get_or_create(slot=placeholder_name)
-        yield placeholder
-    
+def get_or_create_placeholders(obj, model):
+	if obj:
+	    for placeholder_name in model._meta.get_field('placeholders').placeholders:
+	        placeholder, created = obj.placeholders.get_or_create(slot=placeholder_name)
+	        yield (placeholder, placeholder_name)
+	else:
+	    for placeholder_name in model._meta.get_field('placeholders').placeholders:
+	        yield (None, placeholder_name)    
+	        
 def get_m2mplaceholderadmin(modeladmin):
     class RealM2MPlaceholderAdmin(modeladmin):
         
@@ -25,18 +29,18 @@ def get_m2mplaceholderadmin(modeladmin):
             """
             form = super(RealM2MPlaceholderAdmin, self).get_form(request, obj, **kwargs)
             
-            if obj:        
-                
-                for placeholder in get_or_create_placeholders():
+            for placeholder, slot in get_or_create_placeholders(obj, self.model):
 
-                    defaults = {'label': capfirst(placeholder.slot), 'help_text': ''}
-                    defaults.update(kwargs)
+                defaults = {'label': capfirst(slot), 'help_text': ''}
+                defaults.update(kwargs)
                     
-                    widget = PlaceholderPluginEditorWidget(request, self.placeholder_plugin_filter)
-                    widget.choices = []
+                widget = PlaceholderPluginEditorWidget(request, self.placeholder_plugin_filter)
+                widget.choices = []
                     
-                    form.base_fields[placeholder.slot] = CharField(widget=widget, required=False)   
-                    form.base_fields[placeholder.slot].initial = placeholder.pk
+                form.base_fields[slot] = CharField(widget=widget, required=False)
+                
+                if placeholder:   
+                	form.base_fields[slot].initial = placeholder.pk
                     
             return form
             
@@ -46,10 +50,9 @@ def get_m2mplaceholderadmin(modeladmin):
             fieldsets.
             """
             given_fieldsets = super(RealM2MPlaceholderAdmin, self).get_fieldsets(request, obj=None)
-    
-            if obj: # edit
-                for placeholder_name in obj._meta.get_field('placeholders').placeholders:
-                    given_fieldsets += [(title(placeholder_name), {'fields':[placeholder_name], 'classes':['plugin-holder']})]
+
+            for placeholder_name in self.model._meta.get_field('placeholders').placeholders:
+                given_fieldsets += [(title(placeholder_name), {'fields':[placeholder_name], 'classes':['plugin-holder']})]
     
             return given_fieldsets
                 

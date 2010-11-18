@@ -15,7 +15,7 @@ class MultiplePlaceholdersTestCase(unittest.TestCase):
         self.obj = MultiplePlaceholdersExample(heading='Example heading')
         self.obj.save()
         
-        for placeholder in get_or_create_placeholders(self.obj):
+        for placeholder, slot in get_or_create_placeholders(self.obj, MultiplePlaceholdersExample):
             for i in range(3):
                 plugin = Text(plugin_type='TextPlugin',
                     placeholder=placeholder,
