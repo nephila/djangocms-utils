@@ -11,14 +11,14 @@ from cms.forms.widgets import PlaceholderPluginEditorWidget
 from cms.admin.placeholderadmin import PlaceholderAdmin
 
 def get_or_create_placeholders(obj, model):
-	if obj:
-	    for placeholder_name in model._meta.get_field('placeholders').placeholders:
-	        placeholder, created = obj.placeholders.get_or_create(slot=placeholder_name)
-	        yield (placeholder, placeholder_name)
-	else:
-	    for placeholder_name in model._meta.get_field('placeholders').placeholders:
-	        yield (None, placeholder_name)    
-	        
+    if obj:
+        for placeholder_name in model._meta.get_field('placeholders').placeholders:
+            placeholder, created = obj.placeholders.get_or_create(slot=placeholder_name)
+            yield (placeholder, placeholder_name)
+    else:
+        for placeholder_name in model._meta.get_field('placeholders').placeholders:
+            yield (None, placeholder_name)    
+            
 def get_m2mplaceholderadmin(modeladmin):
     class RealM2MPlaceholderAdmin(modeladmin):
         
@@ -40,7 +40,7 @@ def get_m2mplaceholderadmin(modeladmin):
                 form.base_fields[slot] = CharField(widget=widget, required=False)
                 
                 if placeholder:   
-                	form.base_fields[slot].initial = placeholder.pk
+                    form.base_fields[slot].initial = placeholder.pk
                     
             return form
             
