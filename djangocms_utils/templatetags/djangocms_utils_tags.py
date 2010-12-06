@@ -43,3 +43,11 @@ def choose_placeholder(placeholders, placeholder):
     except Placeholder.DoesNotExist:
         return None
 register.filter('choose_placeholder', choose_placeholder)
+
+def get_placeholder_group(placeholder):
+    placeholder_group = 'none'
+    for group, placeholders in settings.PLACEHOLDER_GROUPS.items():
+        if placeholder in placeholders:
+            placeholder_group = group
+    return placeholder_group
+register.filter('get_placeholder_group', get_placeholder_group)
