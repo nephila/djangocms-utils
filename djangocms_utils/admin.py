@@ -57,16 +57,12 @@ def get_m2mplaceholderadmin(modeladmin):
             return given_fieldsets
                 
         def move_plugin(self, request):
-            
-            def get_placeholder(plugin, request):
-                
-                return plugin.placeholder
-                
+
             if request.method == "POST":    
                 if 'plugin_id' in request.POST:
                     plugin = CMSPlugin.objects.get(pk=int(request.POST['plugin_id']))
                     if "placeholder" in request.POST:
-                        obj = plugin.placeholder._get_attached_model().objects.get(placeholders__cmsplugin=plugin)
+                        obj = plugin.placeholder._get_attached_model().objects.get(placeholders__cmsplugin=plugin) # FIXME only works if field is named placeholers
                         placeholder = obj.placeholders.get(slot=request.POST["placeholder"])
                     else:
                         placeholder = plugin.placeholder

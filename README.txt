@@ -2,7 +2,7 @@ BETA
 
 Name: djangocms-utils
 Description: Utilities for django-cms.
-Download: http://bitbucket.org/fivethreeo/djangocms-utils/
+Download: http://github.com/fivethreeo/djangocms-utils/
 
 Features:
 - multiple placeholders in non-page models using a custom field, admin and a template filter
