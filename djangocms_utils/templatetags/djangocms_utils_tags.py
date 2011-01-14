@@ -1,41 +1,28 @@
 from django import template
-
-from cms.templatetags.placeholder_tags import  PlaceholderNode
+from classytags.arguments import Argument
+from classytags.parser import Parser
+from classytags.core import Options
+from cms.templatetags.placeholder_tags import RenderPlaceholder
 from cms.models import Placeholder
-
 register = template.Library()
+ 
+class RenderPlaceholderAs(RenderPlaceholder):
+    name = 'render_placeholder_as'
+    options = Options(
+        Argument('placeholder'),
+        'as',
+        Argument('as_var', default=None, required=False),
+        Argument('width', default=None, required=False)
+    )
 
-class PlaceholderNodeAS(PlaceholderNode):
-    
-    def __init__(self, placeholder, width, asvar):
-        super(PlaceholderNodeAS, self).__init__(placeholder, width)
-        self.asvar = asvar
-    
-    def render(self, context):
-        context[self.asvar] = super(PlaceholderNodeAS, self).render(context)
-        return u''
+    def render_tag(self, context, placeholder, as_var, width):
+        rendered = super(RenderPlaceholderAs, self).render_tag(context, placeholder, width)
+        if as_var:
+            context[as_var] = rendered
+            return u''
+        return rendered
 
-def render_placeholder_as(parser, token):
-    bits = token.split_contents()
-    
-    if 'as' not in bits:
-        raise template.TemplateSyntaxError("%s needs a 'as' argument" % bits[0])
-    
-    name = parser.compile_filter(bits[1])
-    
-    kw = {}
-    remaining_bits = bits[2:]
-    for idx, bit in enumerate(remaining_bits):
-       if idx == 0 or idx % 2 == 0:
-           kw[str(bit)] = remaining_bits[idx+1]
-    
-    width = None
-    if 'width' in kw:
-        width = parser.compile_filter(kw['width'])
-    
-    return PlaceholderNodeAS(name, width, kw['as'])
-
-register.tag('render_placeholder_as', render_placeholder_as)
+register.tag(RenderPlaceholderAs)
 
 def choose_placeholder(placeholders, placeholder):
     try:

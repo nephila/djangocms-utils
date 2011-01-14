@@ -4,7 +4,7 @@ from django.core.handlers.wsgi import WSGIRequest
 from django.conf import settings
 from django.template import Template, Context
 from cms.plugins.text.models import Text
-from testapp.models import MultiplePlaceholdersExample, PlaceholderAsExample
+from djangocms_utils.test.testapp.models import MultiplePlaceholdersExample, PlaceholderAsExample
 from djangocms_utils.admin import get_or_create_placeholders
 from djangocms_utils.templatetags.djangocms_utils_tags import choose_placeholder
 
