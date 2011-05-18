@@ -15,11 +15,11 @@ class RenderPlaceholderAs(RenderPlaceholder):
         Argument('width', default=None, required=False)
     )
 
-    def render_tag(self, context, placeholder, as_var, width):
-        rendered = super(RenderPlaceholderAs, self).render_tag(context, placeholder, width)
-        if as_var:
+    def render_tag(self, context, **kwargs):
+        rendered = super(RenderPlaceholderAs, self).render_tag(context, kwargs['placeholder'], kwargs['width'])
+        if kwargs['as_var']:
             context.push()
-            context[as_var] = rendered
+            context[str(kwargs['as_var'])] = rendered
             return u''
         return rendered
 
