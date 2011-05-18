@@ -18,6 +18,7 @@ class RenderPlaceholderAs(RenderPlaceholder):
     def render_tag(self, context, placeholder, as_var, width):
         rendered = super(RenderPlaceholderAs, self).render_tag(context, placeholder, width)
         if as_var:
+            context.push()
             context[as_var] = rendered
             return u''
         return rendered
