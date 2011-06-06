@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='djangocms-utils',
-      version='0.9.4',
+      version='0.9.5',
       description='Utilities for django-cms',
       author='Oyvind Saltvik',
       author_email='oyvind.saltvik@gmail.com',
