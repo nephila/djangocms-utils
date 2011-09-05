@@ -1,0 +1,11 @@
+[run]
+branch = True
+source =
+    djangocms_utils
+omit =
+    djangocms_utils/migrations/*
+    djangocms_utils/tests.py
+    djangocms_utils/test/*
+    djangocms_utils/test/testapp/*
+[report]
+precision = 2

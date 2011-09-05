@@ -1,0 +1,4 @@
+django-cms
+django-sekizai
+coverage
+unittest-xml-reporting==1.2
