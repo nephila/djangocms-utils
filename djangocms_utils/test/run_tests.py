@@ -81,7 +81,7 @@ def run_tests():
         CMS_FLAT_URLS = False,
         CMS_MENU_TITLE_OVERWRITE = True,
         CMS_HIDE_UNTRANSLATED = False,
-        CMS_URL_OVERWRITE = True
+        CMS_URL_OVERWRITE = True,
         TEST_RUNNER = 'xmlrunner.extra.djangotestrunner.XMLTestRunner',
         TEST_OUTPUT_VERBOSE = True           
     )
